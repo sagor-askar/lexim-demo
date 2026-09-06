@@ -20,17 +20,49 @@ document.addEventListener('DOMContentLoaded', function () {
   handleNavScroll();
   window.addEventListener('scroll', handleNavScroll);
 
-  // Collapse mobile nav on link click
+  // Mobile off-canvas nav menu
   var navLinks = document.querySelectorAll('.main-nav .nav-link');
+  var navToggle = document.getElementById('navToggle');
   var navCollapseEl = document.getElementById('navContent');
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      if (navCollapseEl && navCollapseEl.classList.contains('show')) {
-        var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navCollapseEl);
-        bsCollapse.hide();
+  var navOverlay = document.getElementById('navOverlay');
+
+  var navToggleIcon = navToggle ? navToggle.querySelector('i') : null;
+
+  function openMobileNav() {
+    navCollapseEl.classList.add('is-open');
+    navOverlay.classList.add('is-open');
+    navToggle.classList.add('is-active');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('nav-open');
+    if (navToggleIcon) { navToggleIcon.className = 'bi bi-x-lg'; }
+  }
+  function closeMobileNav() {
+    navCollapseEl.classList.remove('is-open');
+    navOverlay.classList.remove('is-open');
+    navToggle.classList.remove('is-active');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+    if (navToggleIcon) { navToggleIcon.className = 'bi bi-list'; }
+  }
+  if (navToggle && navCollapseEl && navOverlay) {
+    navToggle.addEventListener('click', function () {
+      if (navCollapseEl.classList.contains('is-open')) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
       }
     });
-  });
+    navOverlay.addEventListener('click', closeMobileNav);
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', closeMobileNav);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 992) closeMobileNav();
+    });
+  }
 
   // Scrollspy active link highlight (simple)
   var sections = document.querySelectorAll('section[id]');
