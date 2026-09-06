@@ -512,12 +512,12 @@ a{ text-decoration:none; }
 }
 .stat-item h3{
   color:var(--gold-400);
-  font-size:1.3rem;
+  font-size:1.2rem;
   margin-bottom:.15rem;
 }
 .stat-item span{
   color:rgba(255,255,255,.7);
-  font-size:1.35rem;
+  font-size:1rem;
   letter-spacing:.04em;
   text-transform:uppercase;
   font-weight:600;
